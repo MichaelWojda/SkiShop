@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Main Page</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/inventory}" sec:authorize="hasAuthority('BASIC')">Wypożycz sprzęt</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/add}" sec:authorize="hasAuthority('ADMIN')">Dodaj przedmiot</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/profile}" sec:authorize="hasAuthority('BASIC')">Mój profil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/items}" sec:authorize="hasAuthority('ADMIN')">Zarządzanie inwentarzem</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/login}"
+               th:unless="${#authorization.expression('hasAnyAuthority(''BASIC'',''ADMIN'')')}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/register}"
+               th:unless="${#authorization.expression('hasAnyAuthority(''BASIC'',''ADMIN'')')}">Register</a>
+        </li>
+        <li class="nav-item">
+            <form th:action="@{/logout}" method="post" id="form">
+                <a href="#" onclick="document.getElementById('form').submit();" class="nav-link"
+                   th:if="${#authorization.expression('hasAnyAuthority(''BASIC'',''ADMIN'')')}"
+                >Logout</a>
+            </form>
+        </li>
+    </ul>
+</nav>
+
+
+</body>
+</html>

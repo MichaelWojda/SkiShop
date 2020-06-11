@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <title>Add New Material</title>
+    </head>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/}">Return to MainPage</a>
+        </li>
+        <li class="nav-item">
+            <form th:action="@{/logout}" method="post" id="form">
+                <a href="#" onclick="document.getElementById('form').submit();" class="nav-link"
+                       th:if="${#authorization.expression('hasAnyAuthority(''BASIC'',''ADMIN'')')}"
+                >Logout</a>
+            </form>
+        </li>
+    </ul>
+</nav>
+<div class="container">
+    <p class="display-4">Dodaj nowy materiał:</p>
+    <form th:action="@{/inventory}" th:method="post" th:object="${item}">
+        <div class="form-group">
+            <label for="name">Material name:</label>
+            <input type="text" placeholder="Wpisz nazwę materiału" th:field="*{name}" required id="name"
+                   class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="description">Material description:</label>
+            <input type="text" placeholder="Wpisz opis materiału" th:field="*{description}" required id="description"
+                   class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="price">Material price:</label>
+            <input type="number" step="0.1" placeholder="Wpisz cenę materiału" th:field="*{price}" required id="price"
+                   class="form-control">
+        </div>
+        <input th:type="submit" value="Zapisz" class="btn btn-primary">
+    </form>
+</div>
+</body>
+</html>

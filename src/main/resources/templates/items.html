@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Inventory Page</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/}">Return to MainPage</a>
+        </li>
+        <li class="nav-item">
+            <form th:action="@{/logout}" method="post" id="form">
+                <a href="#" onclick="document.getElementById('form').submit();" class="nav-link"
+                   th:if="${#authorization.expression('hasAnyAuthority(''BASIC'',''ADMIN'')')}"
+                >Logout</a>
+            </form>
+        </li>
+    </ul>
+</nav>
+
+<div th:if="${itemList!=null and !itemList.isEmpty()}" class="container">
+    <table border="1" class="table table-striped table-bordered">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Cena</th>
+            <th>Wypożyczony?</th>
+            <th>Kto Wypozycza?</th>
+            <th>Zwrot</th>
+        </tr>
+        <tr th:each="item: ${itemList}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.description}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.rent}"></td>
+            <td th:if="${item.rent==true}" th:text="${item.personWhoHasIt.username}"></td>
+            <td th:unless="${item.rent==true}"><p class="btn btn-success">Wolny</p></td>
+            <td th:if="${item.rent==true}"><a class="btn btn-primary"
+                                               th:href="@{items/return(id=${item.id})}">Zwrot</a>
+            </td>
+            <td th:unless="${item.rent==true}"><p class="btn btn-danger">Zwrot niemożliwy</p></td>
+        </tr>
+
+
+    </table>
+
+
+</div>
+
+
+</body>
+
+</html>
